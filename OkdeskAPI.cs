@@ -26,9 +26,7 @@ namespace OkdeskAPI
 
         public int[] getIssuesIds()
         {
-            // /api/v1/issues/count{?api_token}
-            // reacted_since=03-12-2018 15:30
-            string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key + "&type[]=evotor_service";
+            string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key + "";
             string res = sendGETRequest(url);
             res = res.Replace("[", "");
             res = res.Replace("]", "");
@@ -53,7 +51,7 @@ namespace OkdeskAPI
         {
             string url = API_URL + "/api/v1/issues/" + id.ToString() + "?api_token=" + API_Key;
             string response = (sendGETRequest(url));
-            Issue result = JObject.Parse(response).ToObject<Issue>();//new Issue(GetRequest(url));
+            Issue result = JObject.Parse(response).ToObject<Issue>();
             return result;
         }
 
@@ -62,7 +60,7 @@ namespace OkdeskAPI
 
             string url = API_URL + "/api/v1/companies/?api_token=" + API_Key + "&id=" + id.ToString();
             string response = (sendGETRequest(url));
-            Company result = JObject.Parse(response).ToObject<Company>();//new Issue(GetRequest(url));
+            Company result = JObject.Parse(response).ToObject<Company>();
             return result;
         }
 
