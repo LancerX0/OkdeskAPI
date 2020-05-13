@@ -24,9 +24,9 @@ namespace OkdeskAPI
             API_URL = aPI_URL;
         }
 
-        public int[] getIssuesIds()
+        public int[] getIssuesIds(IssuesFilter filter)
         {
-            string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key + "";
+            string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key + filter.getFilterString();
             string res = sendGETRequest(url);
             res = res.Replace("[", "");
             res = res.Replace("]", "");
