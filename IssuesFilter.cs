@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OkdeskAPI
 {
-    class IssuesFilter
+    public class IssuesFilter
     {
         public int[] assignee_ids;
         public int[] company_ids;

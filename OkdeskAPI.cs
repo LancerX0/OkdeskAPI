@@ -36,9 +36,9 @@ namespace OkdeskAPI
             return result;
         }
 
-        public Issue[] getIssuesList()
+        public Issue[] getIssuesList(IssuesFilter filter)
         {
-            int[] ids = getIssuesIds();
+            int[] ids = getIssuesIds(filter);
             Issue[] result = new Issue[ids.Length];
             for (int i = 0; i < ids.Length; i++)
             {
