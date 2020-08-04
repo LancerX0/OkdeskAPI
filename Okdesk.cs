@@ -8,26 +8,44 @@ using System.Threading.Tasks;
 
 namespace OkdeskAPI
 {
-    public class OkdeskAPI
+    public class Okdesk
     {
         private readonly string API_Key;
         private readonly string API_URL;
         private static readonly HttpClient client = new HttpClient();
         
-        public OkdeskAPI()
+        public Okdesk()
         {
         }
 
-        public OkdeskAPI(string aPI_Key, string aPI_URL)
+        public Okdesk(string aPI_Key, string aPI_URL)
         {
             API_Key = aPI_Key;
             API_URL = aPI_URL;
+        }
+
+        public bool testConnection()
+        {
+            try
+            {
+                string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key;
+                string res = sendGETRequest(url);
+
+                return true;
+            }
+            catch(Exception exception)
+            {
+                Console.WriteLine("Exception: "+exception.Message);
+                return false;
+            }
         }
 
         public int[] getIssuesIds(IssuesFilter filter)
         {
             string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key + filter.getFilterString();
             string res = sendGETRequest(url);
+            if (res == "[]")
+                return new int[0];
             res = res.Replace("[", "");
             res = res.Replace("]", "");
             string[] arr = res.Split(',');
