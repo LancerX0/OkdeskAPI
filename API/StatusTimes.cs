@@ -4,6 +4,6 @@ namespace OkdeskAPI
 {
     public class StatusTimes
     {
-        public DateTime? openedTimes { get; set; }
+        public DateTime? OpenedTimes { get; set; }
     }
 }

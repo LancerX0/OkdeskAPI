@@ -13,7 +13,6 @@ namespace OkdeskAPI
         private readonly string API_Key;
         private readonly string API_URL;
         private static readonly HttpClient client = new HttpClient();
-        
         public OkdeskAPI()
         {
         }
@@ -24,12 +23,12 @@ namespace OkdeskAPI
             API_URL = aPI_URL;
         }
 
-        public int[] getIssuesIds()
+        public int[] GetIssuesIds()
         {
             // /api/v1/issues/count{?api_token}
             // reacted_since=03-12-2018 15:30
             string url = API_URL + "/api/v1/issues/count?api_token=" + API_Key + "&type[]=evotor_service";
-            string res = sendGETRequest(url);
+            string res = SendGETRequest(url);
             res = res.Replace("[", "");
             res = res.Replace("]", "");
             string[] arr = res.Split(',');
@@ -38,36 +37,36 @@ namespace OkdeskAPI
             return result;
         }
 
-        public Issue[] getIssuesList()
+        public Issue[] GetIssuesList()
         {
-            int[] ids = getIssuesIds();
+            int[] ids = GetIssuesIds();
             Issue[] result = new Issue[ids.Length];
             for (int i = 0; i < ids.Length; i++)
             {
-                result[i] = getIssue(ids[i]);
+                result[i] = GetIssue(ids[i]);
             }
             return result;
         }
 
-        public Issue getIssue(int id)
+        public Issue GetIssue(int id)
         {
             string url = API_URL + "/api/v1/issues/" + id.ToString() + "?api_token=" + API_Key;
-            string response = (sendGETRequest(url));
+            string response = (SendGETRequest(url));
             Issue result = JObject.Parse(response).ToObject<Issue>();//new Issue(GetRequest(url));
             return result;
         }
 
-        public Company getCompanyByID(int id)
+        public Company GetCompanyByID(int id)
         {
 
             string url = API_URL + "/api/v1/companies/?api_token=" + API_Key + "&id=" + id.ToString();
-            string response = (sendGETRequest(url));
+            string response = (SendGETRequest(url));
             Company result = JObject.Parse(response).ToObject<Company>();//new Issue(GetRequest(url));
             return result;
         }
 
         //11
-        public string addComment(int issueID, string content = "", int author_id = 0, Attachment[] attachments = null)
+        public string AddComment(int issueID, string content = "", int author_id = 0, Attachment[] attachments = null)
         {
             string url = API_URL + "/api/v1/issues/" + issueID.ToString() + "/comments?api_token=" + API_Key;
             Dictionary<string, string> keyValues = new Dictionary<string, string>();
@@ -83,11 +82,11 @@ namespace OkdeskAPI
                         keyValues.Add("comment[attachments][" + i.ToString() + "][description]", attachments[i].description);
                 }
 
-            string result = sendPOSTRequest(url, keyValues, files);
+            string result = SendPOSTRequest(url, keyValues, files);
             return result;
         }
 
-        private string sendGETRequest(string url)
+        private string SendGETRequest(string url)
         {
 
             Task<string> response = client.GetStringAsync(url);
@@ -97,7 +96,7 @@ namespace OkdeskAPI
             return responseString;
         }
 
-        private string sendPOSTRequest(string url, Dictionary<string, string> keyValues, Dictionary<string, string> files)
+        private string SendPOSTRequest(string url, Dictionary<string, string> keyValues, Dictionary<string, string> files)
         {
             MultipartFormDataContent form = new MultipartFormDataContent();
             form.Headers.ContentType.MediaType = "multipart/form-data";
